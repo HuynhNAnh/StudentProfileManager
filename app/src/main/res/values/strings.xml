@@ -1,10 +1,3 @@
 <resources>
-    <string name="app_name">QLHoSo</string>
-    <string name="title_main">Quản Lý Hồ Sơ</string>
-    <string name="label_current_name">Họ và tên hiện tại:</string>
-    <string name="default_name">Chưa có thông tin</string>
-    <string name="btn_edit_profile">Chỉnh sửa thông tin</string>
-    <string name="title_edit">Chỉnh Sửa Hồ Sơ</string>
-    <string name="hint_enter_name">Nhập họ và tên mới</string>
-    <string name="btn_save_and_back">Lưu &amp; Quay lại</string>
+    <string name="app_name">StudentProfileManager</string>
 </resources>
