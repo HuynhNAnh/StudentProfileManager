@@ -1,7 +1,11 @@
 package com.ute.studenprofilemanager
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.ute.studenprofilemanager.databinding.ActivityMainBinding
 
@@ -20,12 +24,35 @@ class MainActivity : AppCompatActivity() {
         gpa = 3.8
     )
 
+    // Dang ky Launcher de nhan ket qua tu EditProfileActivity
+    private val editLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val updatedStudent = result.data?.getSerializableExtra("UPDATED_STUDENT") as? Student
+            updatedStudent?.let {
+                student = it
+                bindData(student)
+                Toast.makeText(this, "Đã lưu thông tin mới của ${it.name}!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         bindData(student)
+
+        // Xu ly nut Chinh sua ho so
+        binding.btnEditProfile.setOnClickListener {
+            val intent = Intent(this, EditProfileActivity::class.java).apply {
+                putExtra("STUDENT", student)
+            }
+            editLauncher.launch(intent)
+        }
+
         Log.d(TAG, "onCreate: Activity đang được khởi tạo và nạp layout")
     }
 
