@@ -1,6 +1,7 @@
 package com.ute.studenprofilemanager
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         bindData(student)
 
-        // Nut 1: Chinh sua ho so
+        // Nut 1: Chinh sua ho so (Result API)
         binding.btnEditProfile.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java).apply {
                 putExtra("STUDENT", student)
@@ -75,14 +76,38 @@ class MainActivity : AppCompatActivity() {
             editLauncher.launch(intent)
         }
 
-        // Nut 2: Doi avatar tu thu vien anh
+        // Nut 2: Doi avatar tu thu vien anh (GetContent)
         binding.btnChangeAvatar.setOnClickListener {
             galleryLauncher.launch("image/*")
         }
 
-        // Nut 4: Kiem tra va xin quyen Camera
+        // Nut 3: Goi Co van hoc tap (Implicit Intent ACTION_DIAL)
+        binding.btnCallHotline.setOnClickListener {
+            val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+                data = Uri.parse("tel:0905123456")
+            }
+            try {
+                startActivity(dialIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, "Không tìm thấy ứng dụng gọi điện!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Nut 4: Kiem tra va xin quyen Camera (RequestPermission)
         binding.btnRequestCamera.setOnClickListener {
             cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        }
+
+        // Nut 5: Xem ban do truong hoc UTE (Implicit Intent ACTION_VIEW)
+        binding.btnOpenMap.setOnClickListener {
+            val mapIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("geo:16.0768,108.2141?q=Đại+học+Sư+phạm+Kỹ+thuật+Đà+Nẵng")
+            }
+            try {
+                startActivity(mapIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, "Không tìm thấy ứng dụng bản đồ!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         Log.d(TAG, "onCreate: Activity đang được khởi tạo và nạp layout")
